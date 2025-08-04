@@ -18,6 +18,7 @@
     }
   },
   "scripts": {
+    "prepare": "husky",
     "preinstall": "npx only-allow pnpm",
     "eslint": "eslint . --cache --report-unused-disable-directives --ext .js,.ts,.tsx --max-warnings 0",
     "eslint:ci": "eslint . --report-unused-disable-directives --ext .js,.ts,.tsx --max-warnings 0",
@@ -59,6 +60,8 @@
     "prettier": "^3.6.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@types/eslint-plugin-jsx-a11y": "^6.10.0",
     "@types/estree": "^1.0.8",
     "@types/estree-jsx": "^1.0.5",
@@ -69,6 +72,7 @@
     "@typescript-eslint/rule-tester": "^8.38.0",
     "enquirer": "^2.4.1",
     "eslint": "^9.32.0",
+    "husky": "^9.1.7",
     "prettier": "^3.6.2",
     "pretty-quick": "^4.2.2",
     "rimraf": "^6.0.1",
