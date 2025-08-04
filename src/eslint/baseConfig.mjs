@@ -43,7 +43,7 @@ export function createBaseConfig(
       airbnbBaseConfig,
       airbnbReactConfig,
       airbnbTypescript,
-      reactHookConfigs['recommended-latest'],
+      reactHookConfigs.recommended,
       enableReactCompiler ? reactCompilerPlugin.configs.recommended : {},
       perfectionistConfig,
       prettier,
