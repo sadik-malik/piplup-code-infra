@@ -69,7 +69,7 @@ async function main() {
   if (version) {
     run(`pnpm version ${version} --no-git-tag-version`);
     run(`git add package.json`);
-    run(`git commit -m "release: v${version}"`);
+    run(`git commit -m "chore: v${version}"`);
   }
 
   // 4. Run build script if defined in package.json
