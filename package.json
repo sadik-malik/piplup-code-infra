@@ -1,6 +1,6 @@
 {
   "name": "@piplup/code-infra",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Infra scripts and configs to be used across Piplup",
   "type": "module",
   "repository": {
