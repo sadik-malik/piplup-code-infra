@@ -68,6 +68,8 @@ async function main() {
   }
   if (version) {
     run(`pnpm version ${version} --no-git-tag-version`);
+    run(`git add package.json`);
+    run(`git commit -m "release: v${version}"`);
   }
 
   // 4. Run build script if defined in package.json
@@ -83,8 +85,6 @@ async function main() {
 
   // 6. Tag and push
   if (version) {
-    run(`git add package.json`);
-    run(`git commit -m "release: v${version}"`);
     run(`git tag v${version}`);
     run('git push');
     run('git push --tags');
