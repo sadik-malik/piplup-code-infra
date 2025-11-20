@@ -38,6 +38,8 @@ export function createBaseConfig({
   enableReactCompiler = false,
   baseDirectory = process.cwd(),
 } = {}) {
+  const browserlistrcPath = path.join(baseDirectory, '.browserslistrc');
+
   return defineConfig([
     includeIgnoreIfExists(path.join(baseDirectory, '.gitignore'), `Ignore rules from .gitignore`),
     includeIgnoreIfExists(path.join(baseDirectory, '.lintignore'), `Ignore rules from .lintignore`),
@@ -72,7 +74,9 @@ export function createBaseConfig({
           },
           settings: {
             browserslistOpts: {
-              config: path.join(baseDirectory, '.browserslistrc'),
+              config: fs.existsSync(browserlistrcPath)
+                ? path.join(baseDirectory, '.browserslistrc')
+                : undefined,
               env: 'stable',
               ignoreUnknownVersions: true,
             },
