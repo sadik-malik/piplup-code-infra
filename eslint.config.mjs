@@ -1,17 +1,11 @@
 import { defineConfig } from 'eslint/config';
-import * as path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { createBaseConfig } from './src/eslint/baseConfig.mjs';
+import { EXTENSION_TS } from './src/eslint/extensions.mjs';
 
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
-
-export default defineConfig({
-  extends: createBaseConfig({
-    baseDirectory: dirname,
-  }),
-  name: 'Base config',
+export default defineConfig(createBaseConfig({ baseDirectory: import.meta.dirname }), {
+  files: [`**/*${EXTENSION_TS}`],
   rules: {
+    'compat/compat': 'off',
     'jsx-a11y/control-has-associated-label': 'off',
     'jsx-a11y/no-autofocus': 'off',
     'react/prop-types': 'off',

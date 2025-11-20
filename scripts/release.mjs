@@ -11,7 +11,7 @@ const { prompt } = enquirer;
  *
  * @param {string} cmd - The command to execute.
  * @param {Object} [opts={}] - Optional options to pass to execSync.
- * @returns {string} The stdout from the executed command.
+ * @returns {NonSharedBuffer} The stdout from the executed command.
  */
 function run(cmd, opts = {}) {
   return execSync(cmd, { stdio: 'inherit', ...opts });
@@ -35,7 +35,19 @@ async function main() {
     process.exit(1);
   }
 
-  // 3. Prompt for version bump using semver
+  /**
+   * 3. ALWAYS run build before version bump + publish
+   * This ensures build artifacts i.e. type definitions are available for release.
+   */
+  if (existsSync('package.json')) {
+    const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
+    if (pkg.scripts && pkg.scripts.build) {
+      console.log('📦 Building project before publishing...');
+      run('pnpm run build');
+    }
+  }
+
+  // 4. Prompt for version bump using semver
   let version = null;
   let currentVersion = null;
   if (existsSync('package.json')) {
@@ -66,24 +78,18 @@ async function main() {
     );
     version = manualVersion && manualVersion.trim();
   }
+
+  // 5. Apply version bump (after build)
   if (version) {
     run(`pnpm version ${version} --no-git-tag-version`);
     run(`git add package.json`);
     run(`git commit -m "chore: v${version}"`);
   }
 
-  // 4. Run build script if defined in package.json
-  if (existsSync('package.json')) {
-    const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
-    if (pkg.scripts && pkg.scripts.build) {
-      run('pnpm run build');
-    }
-  }
-
-  // 5. Publish to npm
+  // 6. Publish to npm
   run('pnpm publish --access public');
 
-  // 6. Tag and push
+  // 7. Tag and push
   if (version) {
     run(`git tag v${version}`);
     run('git push');

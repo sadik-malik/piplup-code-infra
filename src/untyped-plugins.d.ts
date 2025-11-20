@@ -94,3 +94,17 @@ declare module '@next/eslint-plugin-next' {
   declare const config: NextEslintPluginConfig;
   export default config;
 }
+
+declare module 'stylelint-config-standard' {
+  import type { Config } from 'stylelint';
+
+  declare const configExtends: Config['extends'];
+  export default configExtends;
+}
+
+declare module 'postcss-styled-syntax' {
+  import type { Syntax } from 'postcss';
+
+  declare const syntax: Syntax;
+  export default syntax;
+}

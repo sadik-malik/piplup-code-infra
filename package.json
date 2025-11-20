@@ -11,24 +11,33 @@
   "exports": {
     "./package.json": "./package.json",
     "./prettier": {
-      "default": "./src/prettier.mjs"
+      "default": "./src/prettier.mjs",
+      "types": "./build/prettier.d.mts"
     },
     "./eslint": {
-      "default": "./src/eslint/index.mjs"
+      "default": "./src/eslint/index.mjs",
+      "types": "./build/eslint/index.d.mts"
+    },
+    "./stylelint": {
+      "types": "./build/stylelint/index.d.mts",
+      "default": "./src/stylelint/index.mjs"
     }
   },
   "scripts": {
     "prepare": "husky",
     "preinstall": "npx only-allow pnpm",
+    "build": "tsc -p tsconfig.build.json",
     "eslint": "eslint . --cache --report-unused-disable-directives --ext .js,.ts,.tsx --max-warnings 0",
     "eslint:ci": "eslint . --report-unused-disable-directives --ext .js,.ts,.tsx --max-warnings 0",
     "prettier": "pretty-quick --ignore-path .lintignore",
     "prettier:all": "prettier --write . --ignore-path .lintignore",
+    "stylelint": "stylelint --reportInvalidScopeDisables --reportNeedlessDisables \"**/*.?(c|m)[jt]s?(x)\" \"**/*.css\" --ignore-path .lintignore",
     "typescript": "tsc -p tsconfig.json",
     "clean": "node scripts/clean.mjs",
     "release": "node scripts/release.mjs"
   },
   "files": [
+    "bin",
     "build",
     "src",
     "README.md",
@@ -40,46 +49,52 @@
   "keywords": [],
   "author": "Sadik Malik",
   "license": "MIT",
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.22.0",
   "dependencies": {
-    "@eslint/compat": "^1.3.1",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-base": "^15.0.0",
+    "@eslint/compat": "^2.0.0",
+    "@eslint/js": "^9.39.1",
+    "@eslint/json": "^0.14.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-module-utils": "^2.12.1",
+    "eslint-plugin-compat": "^6.0.2",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-perfectionist": "^4.15.0",
+    "eslint-plugin-perfectionist": "^4.15.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
-    "eslint-plugin-react-hooks": "6.0.0-rc.1",
-    "globals": "^16.3.0",
-    "typescript-eslint": "^8.38.0"
+    "eslint-plugin-react-hooks": "7.0.1",
+    "globals": "^16.5.0",
+    "minimatch": "^10.1.1",
+    "postcss-styled-syntax": "^0.7.1",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard": "^39.0.1",
+    "typescript-eslint": "^8.47.0"
   },
   "peerDependencies": {
     "eslint": "^9.32.0",
     "prettier": "^3.6.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@types/eslint-plugin-jsx-a11y": "^6.10.0",
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@types/eslint-plugin-jsx-a11y": "^6.10.1",
     "@types/estree": "^1.0.8",
     "@types/estree-jsx": "^1.0.5",
-    "@types/node": "^24.1.0",
-    "@types/semver": "^7.7.0",
-    "@types/yargs": "^17.0.33",
-    "@typescript-eslint/parser": "^8.38.0",
-    "@typescript-eslint/rule-tester": "^8.38.0",
+    "@types/node": "^24.10.1",
+    "@types/semver": "^7.7.1",
+    "@types/yargs": "^17.0.35",
+    "@typescript-eslint/parser": "^8.47.0",
+    "@typescript-eslint/rule-tester": "^8.47.0",
     "enquirer": "^2.4.1",
-    "eslint": "^9.32.0",
+    "eslint": "^9.39.1",
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
     "pretty-quick": "^4.2.2",
-    "rimraf": "^6.0.1",
-    "semver": "^7.7.2",
-    "typescript": "~5.7.3",
-    "vitest": "^3.2.4",
+    "rimraf": "^6.1.2",
+    "semver": "^7.7.3",
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.10",
     "yargs": "^18.0.0"
   }
 }
