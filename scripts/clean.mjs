@@ -1,7 +1,7 @@
 // @ts-check
 import { rimraf } from 'rimraf';
 
-const patterns = ['build', ".eslintcache"];
+const patterns = ['build', '.eslintcache'];
 
 async function main() {
   try {

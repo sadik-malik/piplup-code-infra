@@ -1,5 +1,5 @@
-import { RuleTester as EslintRuleTester } from 'eslint';
 import { RuleTester as TypescriptEslintRuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester as EslintRuleTester } from 'eslint';
 import { describe, it, afterAll } from 'vitest';
 
 EslintRuleTester.describe = describe;

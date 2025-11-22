@@ -32,7 +32,65 @@ const criticalAirbnbRules = {
   'import/no-dynamic-require': 'error',
   'import/no-mutable-exports': 'error',
   // Import rules (critical ones not in recommended)
-  'import/order': ['error', { groups: [['builtin', 'external', 'internal']] }],
+  'import/order': [
+    'error',
+    {
+      alphabetize: { caseInsensitive: true, order: 'asc' },
+      groups: [
+        'builtin', // Node.js built-in modules
+        'external', // React, next, node_modules
+        'internal', // @/
+        'parent', // ../
+        'sibling', // ./
+        'index',
+        'object',
+        'type',
+      ],
+      'newlines-between': 'always',
+      pathGroups: [
+        // 1. CSS files first
+        {
+          group: 'builtin',
+          pattern: '**/*.css',
+          position: 'before',
+        },
+        {
+          group: 'builtin',
+          pattern: '**/*.scss',
+          position: 'before',
+        },
+        // 2. Node built-ins are already in "builtin" group (no extra config needed)
+
+        // 3. React & Next come before other external packages
+        {
+          group: 'external',
+          pattern: 'react',
+          position: 'before',
+        },
+        {
+          group: 'external',
+          pattern: 'react-dom',
+          position: 'before',
+        },
+        {
+          group: 'external',
+          pattern: 'next',
+          position: 'before',
+        },
+        {
+          group: 'external',
+          pattern: 'next/**',
+          position: 'before',
+        },
+        {
+          group: 'external',
+          pattern: '@next/**',
+          position: 'before',
+        },
+      ],
+      pathGroupsExcludedImportTypes: ['builtin'],
+    },
+  ],
 
   // Styles
   // require or disallow an empty line between class members
@@ -181,6 +239,15 @@ const typescriptOverrides = {
   // The `@typescript-eslint/naming-convention` rule allows `leadingUnderscore` and `trailingUnderscore` settings. However, the existing `no-underscore-dangle` rule already takes care of this.
   '@typescript-eslint/naming-convention': [
     'error',
+    // Allow __dirname and __filename
+    {
+      filter: {
+        match: true,
+        regex: '^__(dirname|filename)$',
+      },
+      format: null,
+      selector: 'variable',
+    },
     // Allow camelCase variables (23.2), PascalCase variables (23.8), and UPPER_CASE variables (23.10)
     {
       format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
@@ -321,6 +388,9 @@ export function createCoreConfig(options = {}) {
           {
             args: 'after-used',
             argsIgnorePattern: '^_',
+            caughtErrorsIgnorePattern: '^(_|ignore)',
+            destructuredArrayIgnorePattern: '^_',
+            varsIgnorePattern: '^(_|React$)',
             caughtErrors: 'none',
             ignoreRestSiblings: true,
             vars: 'all',
@@ -424,7 +494,15 @@ export function createCoreConfig(options = {}) {
           ...restrictedSyntaxRules,
         ],
         'no-throw-literal': 'error',
-        'no-underscore-dangle': 'error',
+        'no-underscore-dangle': [
+          'error',
+          {
+            allow: ['__filename', '__dirname'],
+            allowAfterSuper: false,
+            allowAfterThis: false,
+            enforceInMethodNames: false,
+          },
+        ],
         'no-unused-vars': 'off',
 
         'no-use-before-define': 'off',
